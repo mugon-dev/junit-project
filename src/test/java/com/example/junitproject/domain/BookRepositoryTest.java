@@ -1,6 +1,7 @@
 package com.example.junitproject.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,6 +84,17 @@ class BookRepositoryTest {
     }
 
     // 4. 책 수정
+    @Test
+    public void 책삭제_test(){
+        // given
+        Long id = 1L;
+
+        // when
+        bookRepository.deleteById(id);
+
+        // then
+        assertFalse(bookRepository.findById(id).isPresent()); // false일때 테스트 성공
+    }
 
     // 5. 책 삭제
 }
