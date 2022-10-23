@@ -22,6 +22,7 @@ class BookRepositoryTest {
      * 2-1-1-1. 단점 : 매번 실행해서 느려짐
      * 2-1-2. SQL 어노테이션에 작성한 sql문을 직접 실행
      * 2-1-2-1. resources/db/tableInit.sql (drop talbe -> create table)
+     * id를 사용하는 곳에서는 테이블을 초기화해줘야함
      */
 
     @Autowired // DI
@@ -97,6 +98,37 @@ class BookRepositoryTest {
     }
 
     // 4. 책 수정
+    @Sql("classpath:db/tableInit.sql")
+    @Test
+    public void 책수정_test(){
+        // given
+        Long id = 1L;
+        String title = "junit5";
+        String author = "메타코딩";
+        Book book = new Book(id,title,author);
+
+        // when
+        bookRepository.findAll()
+            .forEach((b)->{
+                System.out.println(b.getId());
+                System.out.println(b.getTitle());
+                System.out.println(b.getAuthor());
+                System.out.println("==============1");
+            });
+
+        Book bookPS = bookRepository.save(book);
+
+        bookRepository.findAll()
+            .forEach((b)->{
+                System.out.println(b.getId());
+                System.out.println(b.getTitle());
+                System.out.println(b.getAuthor());
+                System.out.println("==============2");
+            });
+        // then
+        assertEquals(id, bookPS.getId());
+
+    }
 
 
     // 5. 책 삭제
