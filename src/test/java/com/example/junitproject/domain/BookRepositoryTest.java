@@ -8,9 +8,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest // DB와 관련된 컴포넌트만 메모리에 로딩
 class BookRepositoryTest {
+
+    /**
+     * Junit 테스트 특징
+     * 1. 테스트 메서드의 순서 보장이 안된다 (순서를 만들어줄려면 Order 어노테이션 사용)
+     * 2. 테스트 메서드가 하나 실행 후 종료되면 데이터가 초기화된다. - Transactional 어노테이션
+     * 2-1. 그러나 Primary key auto_increment 값이 초기화가 안됨
+     * 2-1-1. 해결하기 위해 AfterEach로 sql문을 직접 실행해서 auto_increment를 초기화
+     * 2-1-1-1. 단점 : 매번 실행해서 느려짐
+     * 2-1-2. SQL 어노테이션에 작성한 sql문을 직접 실행
+     * 2-1-2-1. resources/db/tableInit.sql (drop talbe -> create table)
+     */
 
     @Autowired // DI
     private BookRepository bookRepository;
@@ -70,6 +82,7 @@ class BookRepositoryTest {
     }
 
     // 3. 책 한건 보기
+    @Sql("classpath:db/tableInit.sql")
     @Test
     public void 책한건보기_test(){
         // given
@@ -84,6 +97,10 @@ class BookRepositoryTest {
     }
 
     // 4. 책 수정
+
+
+    // 5. 책 삭제
+    @Sql("classpath:db/tableInit.sql")
     @Test
     public void 책삭제_test(){
         // given
@@ -95,6 +112,4 @@ class BookRepositoryTest {
         // then
         assertFalse(bookRepository.findById(id).isPresent()); // false일때 테스트 성공
     }
-
-    // 5. 책 삭제
 }
