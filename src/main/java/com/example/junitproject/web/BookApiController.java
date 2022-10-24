@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +50,7 @@ public class BookApiController { // 컴포지션 = has 관계
     }
 
     // 2. 책목록보기
+    @GetMapping("/api/v1/book")
     public ResponseEntity<?> getBookList() {
         BookListRespDto bookList = bookService.책목록보기();
         return new ResponseEntity<>(CMResDto.builder()
@@ -58,8 +61,14 @@ public class BookApiController { // 컴포지션 = has 관계
     }
 
     // 3. 책한건보기
-    public ResponseEntity<?> getBookOne() {
-        return null;
+    @GetMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> getBookOne(@PathVariable Long id) {
+        BookResDto bookResDto = bookService.책한건보기(id);
+        return new ResponseEntity<>(CMResDto.builder()
+            .code(1)
+            .msg("글 한건보기 성공")
+            .body(bookResDto)
+            .build(), HttpStatus.OK);
     }
 
     // 4. 책삭제하기
