@@ -11,6 +11,7 @@ import com.example.junitproject.util.MailSender;
 import com.example.junitproject.web.dto.BookResDto;
 import com.example.junitproject.web.dto.BookSaveReqDto;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,5 +65,19 @@ class BookServiceTest {
 
         // then
         assertThat(dtos.get(0).getTitle()).isEqualTo("junit강의");
+    }
+
+    @Test
+    void 책한건보기_테스트(){
+        // given
+        Long id = 1L;
+        Book book = new Book(1L,"junit강의","메타코딩");
+        Optional<Book> bookOP = Optional.of(book);
+        // stub
+        when(bookRepository.findById(id)).thenReturn(bookOP);
+        // when
+        BookResDto dto = bookService.책한건보기(id);
+        // then
+        assertThat(dto.getTitle()).isEqualTo(book.getTitle());
     }
 }
