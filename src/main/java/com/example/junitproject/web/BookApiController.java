@@ -7,6 +7,7 @@ import com.example.junitproject.web.dto.response.BookResDto;
 import com.example.junitproject.web.dto.response.CMResDto;
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,8 +86,22 @@ public class BookApiController { // 컴포지션 = has 관계
     }
 
     // 5. 책수정하기
-    public ResponseEntity<?> updateBook() {
-        return null;
+    @PutMapping("/api/v1/book/{id}")
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody @Valid BookSaveReqDto bookSaveReqDto,BindingResult bindResult) {
+        if (bindResult.hasErrors()) {
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError fe : bindResult.getFieldErrors()) {
+                errorMap.put(fe.getField(), fe.getDefaultMessage());
+            }
+            throw new RuntimeException(errorMap.toString());
+        }
+        BookResDto bookResDto = bookService.책수정하기(id,bookSaveReqDto);
+        return new ResponseEntity<>(CMResDto.builder()
+            .code(1)
+            .msg("글 수정 성공")
+            .body(bookResDto)
+            .build(), HttpStatus.OK);
+
     }
 
 }
