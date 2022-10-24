@@ -18,7 +18,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("dev")
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경 생성
 class BookServiceTest {
 
