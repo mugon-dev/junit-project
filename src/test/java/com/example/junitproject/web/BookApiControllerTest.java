@@ -57,6 +57,27 @@ class BookApiControllerTest {
 
     @Sql("classpath:db/tableInit.sql")
     @Test
+    public void getBookOne_test() { // 1. getBookOne_test 시작전에 BeforeEach를 시작하는데 !!! 이모든 것 전에 테이블을 초기화를 한번 함.
+        // given
+        Integer id = 1;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/" + id, HttpMethod.GET, request, String.class);
+
+        System.out.println(response.getBody());
+
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(title).isEqualTo("junit");
+    }
+
+    @Sql("classpath:db/tableInit.sql")
+    @Test
     void getBookList_test() {
         // given
 
