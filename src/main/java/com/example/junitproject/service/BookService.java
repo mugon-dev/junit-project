@@ -3,11 +3,11 @@ package com.example.junitproject.service;
 import com.example.junitproject.domain.Book;
 import com.example.junitproject.domain.BookRepository;
 import com.example.junitproject.util.MailSender;
-import com.example.junitproject.web.dto.BookResDto;
-import com.example.junitproject.web.dto.BookSaveReqDto;
+import com.example.junitproject.web.dto.request.BookSaveReqDto;
+import com.example.junitproject.web.dto.response.BookListRespDto;
+import com.example.junitproject.web.dto.response.BookResDto;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +32,13 @@ public class BookService {
     }
 
     // 2. 책목록보기
-    public List<BookResDto> 책목록보기() {
-        return bookRepository.findAll().stream()
-            .map(Book::toDto)
-            .collect(Collectors.toList());
+    public BookListRespDto 책목록보기() {
+        List<BookResDto> dtos = bookRepository.findAll().stream()
+            .map(Book::toDto).toList();
+
+        return BookListRespDto.builder()
+            .bookList(dtos)
+            .build();
     }
 
 

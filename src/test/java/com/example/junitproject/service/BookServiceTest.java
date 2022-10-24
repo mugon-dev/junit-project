@@ -8,8 +8,9 @@ import static org.mockito.Mockito.when;
 import com.example.junitproject.domain.Book;
 import com.example.junitproject.domain.BookRepository;
 import com.example.junitproject.util.MailSender;
-import com.example.junitproject.web.dto.BookResDto;
-import com.example.junitproject.web.dto.BookSaveReqDto;
+import com.example.junitproject.web.dto.response.BookListRespDto;
+import com.example.junitproject.web.dto.response.BookResDto;
+import com.example.junitproject.web.dto.request.BookSaveReqDto;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -61,10 +62,10 @@ class BookServiceTest {
             new Book(2L, "spring강의", "겟인데어"));
         when(bookRepository.findAll()).thenReturn(books);
         // when
-        List<BookResDto> dtos = bookService.책목록보기();
+        BookListRespDto dtos = bookService.책목록보기();
 
         // then
-        assertThat(dtos.get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(dtos.getItems().get(0).getTitle()).isEqualTo("junit강의");
     }
 
     @Test

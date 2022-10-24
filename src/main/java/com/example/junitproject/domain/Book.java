@@ -1,6 +1,6 @@
 package com.example.junitproject.domain;
 
-import com.example.junitproject.web.dto.BookResDto;
+import com.example.junitproject.web.dto.response.BookResDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
