@@ -1,5 +1,6 @@
 package com.example.junitproject.domain;
 
+import com.example.junitproject.web.dto.BookResDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,5 +33,13 @@ public class Book {
     public void update(String title, String author){
         this.title = title;
         this.author = author;
+    }
+
+    public BookResDto toDto(){
+        return BookResDto.builder()
+            .id(id)
+            .title(title)
+            .author(author)
+            .build();
     }
 }
